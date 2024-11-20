@@ -74,25 +74,28 @@ export const ImageProvider = ({ children }: { children: ReactNode }) => {
         case 'enhance':
           result = await fluxService.enhanceImage(state.originalImage);
           break;
-        // 添加其他处理方法...
         default:
           throw new Error('Unsupported style');
       }
 
-      const outputUrl = Array.isArray(result) ? result[0] : result;
+      if (!result) {
+        throw new Error('Processing failed - no result received');
+      }
+
+      console.log('Processing completed:', result);
       
-      dispatch({ type: 'SET_PROCESSED_IMAGE', payload: outputUrl });
+      dispatch({ type: 'SET_PROCESSED_IMAGE', payload: result });
       dispatch({ type: 'SET_STATUS', payload: 'completed' });
       
       const historyItem = {
         id: Date.now().toString(),
         originalImage: state.originalImage,
-        processedImage: outputUrl,
+        processedImage: result,
         style,
         timestamp: Date.now(),
       };
-      // History is handled separately in a different reducer
-      dispatch({ type: 'SET_STATUS', payload: 'completed' });
+      // 添加到历史记录
+      //dispatch({ type: 'SET_HISTORY', payload: [...state.history, historyItem] });
     } catch (error) {
       console.error('Processing failed:', error);
       dispatch({ type: 'SET_STATUS', payload: 'error' });

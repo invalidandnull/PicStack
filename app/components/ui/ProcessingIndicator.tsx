@@ -1,4 +1,4 @@
-import { useImage } from '@/app/context/ImageContext';
+import { useImage } from '@/context/ImageContext';
 
 const ProcessingIndicator = () => {
   const { state } = useImage();

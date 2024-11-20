@@ -1,16 +1,24 @@
 import { useState } from 'react';
 import { useImage } from '@/app/context/ImageContext';
+import Image from 'next/image';
 
 const ResultPreview = () => {
   const { state } = useImage();
   const [isDownloading, setIsDownloading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleDownload = async () => {
     if (!state.processedImage) return;
     
     try {
       setIsDownloading(true);
+      setError(null);
       const response = await fetch(state.processedImage);
+      
+      if (!response.ok) {
+        throw new Error('Failed to download image');
+      }
+      
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -22,6 +30,7 @@ const ResultPreview = () => {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Download failed:', error);
+      setError('下载失败，请重试');
     } finally {
       setIsDownloading(false);
     }
@@ -32,20 +41,29 @@ const ResultPreview = () => {
   return (
     <div className="mt-6">
       <div className="relative aspect-square rounded-lg overflow-hidden border">
-        <img
-          src={state.processedImage}
-          alt="处理结果"
-          className="w-full h-full object-contain"
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={state.processedImage}
+            alt="处理结果"
+            fill
+            className="object-contain"
+            onError={() => setError('图片加载失败')}
+          />
+        </div>
       </div>
+      
+      {error && (
+        <p className="mt-2 text-red-500 text-sm text-center">{error}</p>
+      )}
+      
       <div className="mt-4 flex justify-center">
         <button
           onClick={handleDownload}
-          disabled={isDownloading}
+          disabled={isDownloading || !!error}
           className={`
             px-6 py-2 rounded-lg bg-blue-500 text-white
             flex items-center gap-2 transition-all duration-200
-            ${isDownloading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}
+            ${(isDownloading || !!error) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}
           `}
         >
           {isDownloading ? (
