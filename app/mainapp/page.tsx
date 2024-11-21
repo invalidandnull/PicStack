@@ -3,6 +3,7 @@
 import ImageProcessor from './components/ImageProcessor';
 import TextToImage from './components/TextToImage';
 import ProductBackground from './components/ProductBackground';
+import BlurBackground from './components/BlurBackground';
 
 export default function MainApp() {
   return (
@@ -23,6 +24,11 @@ export default function MainApp() {
         <section>
           <h2 className="text-xl font-semibold mb-4">产品背景替换</h2>
           <ProductBackground />
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-4">背景模糊</h2>
+          <BlurBackground />
         </section>
       </div>
     </div>

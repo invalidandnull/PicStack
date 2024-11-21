@@ -14,9 +14,13 @@ const MODELS = {
     }
   },
   'remove-bg': {
-    version: "da7d45f3b836795f945f221fc0b01a6d3ab7f5e163f13208948ad436001e2255",
+    version: "fb8af171cfa1616ddcf1242c093f9c46bcada5ad4cf6f2fbe8b81b330ec5c003",
     options: {}
   },
+  // 'remove-bg': {
+  //   version: "da7d45f3b836795f945f221fc0b01a6d3ab7f5e163f13208948ad436001e2255",
+  //   options: {}
+  // },
   restore: {
     version: "0fbacf7afc6c144e5be9767cff80f25aff23e52b0708f17e20f9879b2f21516c",
     options: {
