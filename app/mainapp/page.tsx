@@ -6,6 +6,7 @@ import ProductBackground from './components/ProductBackground';
 import BlurBackground from './components/BlurBackground';
 import FaceSwap from './components/FaceSwap';
 import IdPhoto from './components/IdPhoto';
+import StyleTransfer from './components/StyleTransfer';
 
 export default function MainApp() {
   return (
@@ -41,6 +42,11 @@ export default function MainApp() {
         <section>
           <h2 className="text-xl font-semibold mb-4">AI 证件照</h2>
           <IdPhoto />
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-4">AI 风格转换</h2>
+          <StyleTransfer />
         </section>
       </div>
     </div>
