@@ -8,6 +8,7 @@ import FaceSwap from './components/FaceSwap';
 import IdPhoto from './components/IdPhoto';
 import StyleTransfer from './components/StyleTransfer';
 import FaceScene from './components/FaceScene';
+import DomainImage from './components/DomainImage';
 
 export default function MainApp() {
   return (
@@ -53,6 +54,11 @@ export default function MainApp() {
         <section>
           <h2 className="text-xl font-semibold mb-4">人脸场景化</h2>
           <FaceScene />
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold mb-4">特定领域生成</h2>
+          <DomainImage />
         </section>
       </div>
     </div>
