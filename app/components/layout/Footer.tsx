@@ -1,20 +1,20 @@
 import Link from 'next/link';
 
 const footerLinks = {
-  '产品': [
-    { label: '功能介绍', href: '#' },
-    { label: '价格方案', href: '/pricing' },
-    { label: '更新日志', href: '#' },
+  'Product': [
+    { label: 'Feature', href: '#' },
+    { label: 'Pricing', href: '/pricing' },
+    { label: 'Changelog', href: '#' },
   ],
-  '资源': [
-    { label: '使用教程', href: '#' },
-    { label: '帮助中心', href: '#' },
-    { label: 'API 文档', href: '#' },
+  'Resources': [
+    { label: 'Tutorial', href: '#' },
+    { label: 'Help Center', href: '#' },
+    { label: 'API Documentation', href: '#' },
   ],
-  '关于': [
-    { label: '关于我们', href: '#' },
-    { label: '联系我们', href: '#' },
-    { label: '用户协议', href: '#' },
+  'About': [
+    { label: 'About Us', href: '#' },
+    { label: 'Contact Us', href: '#' },
+    { label: 'Terms of Service', href: '#' },
   ],
 };
 
@@ -28,7 +28,7 @@ export default function Footer() {
               picstack
             </Link>
             <p className="mt-4 text-sm text-gray-600">
-              AI 驱动的图片处理工具，让创作更简单
+              AI-driven image processing tool, making creation easier
             </p>
           </div>
           {Object.entries(footerLinks).map(([category, links]) => (

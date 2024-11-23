@@ -47,6 +47,7 @@ export default function Navbar() {
   return (
     <div className="border-b">
       <div className="container mx-auto flex h-16 items-center justify-between">
+        <div className="flex items-center gap-16">
         {/* Logo */}
         <Link href="/" className="font-bold text-2xl">
           picstack
@@ -56,7 +57,7 @@ export default function Navbar() {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>功能</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="text-md">Tools</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <div className="grid grid-cols-5 gap-3 p-6 w-[1200px]">
                   {Object.entries(features).map(([category, items]) => (
@@ -83,17 +84,17 @@ export default function Navbar() {
             <NavigationMenuItem>
               <Link href="/pricing" legacyBehavior passHref>
                 <NavigationMenuLink className="px-4 py-2">
-                  价格
+                  Pricing
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
+        </div>
         {/* Auth Buttons */}
         <div className="space-x-4">
-          <Button variant="ghost">登录</Button>
-          <Button>注册</Button>
+          <Button variant="ghost">Login</Button>
+          <Button>Register</Button>
         </div>
       </div>
     </div>
