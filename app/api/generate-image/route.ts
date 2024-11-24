@@ -22,7 +22,7 @@ export async function POST(request: Request) {
           num_outputs: 1,
           aspect_ratio: params.aspect_ratio || "1:1",
           output_format: "png",
-          output_quality: 80,
+          output_quality: params.output_quality || 80,
           num_inference_steps: params.num_inference_steps || 4
         }
       })
