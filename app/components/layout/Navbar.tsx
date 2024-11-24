@@ -5,41 +5,41 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import { Button } from '@/components/ui/button';
 
 const features = {
-  '图片处理': [
-    { title: '去除背景', description: '智能去除图片背景', href: '/remove-bg' },
-    { title: '更改背景', description: '为图片添加新背景', href: '/change-bg' },
-    { title: '模糊背景', description: '创建景深效果', href: '/blur-bg' },
-    { title: '高清图片', description: '提升图片质量', href: '/enhance' },
-    { title: '图片修复', description: '修复受损图片', href: '/restore' },
-    { title: '证照生成', description: '生成标准证件照', href: '/id-photo' },
+  'Image Processing': [
+    { title: 'Remove Background', description: 'Remove Background from Image', href: '/remove-bg' },
+    { title: 'Change Background', description: 'Change Background of Image', href: '/change-bg' },
+    { title: 'Blur Background', description: 'Blur Background of Image', href: '/blur-bg' },
+    { title: 'Enhance Image', description: 'Enhance Image Quality', href: '/enhance' },
+    { title: 'Restore Image', description: 'Restore Damaged Image', href: '/restore' },
+    { title: 'ID Photo', description: 'Generate Standard ID Photo', href: '/id-photo' },
   ],
-  'AI 创作': [
-    { title: '图片生成', description: '文本生成图片', href: '/generate' },
-    { title: 'AI换脸', description: '智能换脸技术', href: '/face-swap' },
-    { title: '风格转换', description: '改变图片风格', href: '/style-transfer' },
-    { title: '脸场景化', description: '人物场景合成', href: '/face-scene' },
-    { title: '脸转风格', description: '人物风格转换', href: '/style-transfer' },
+  'AI Creation': [
+    { title: 'Image Generation', description: 'Text to Image', href: '/generate' },
+    { title: 'Face Swap', description: 'Smart Face Swap', href: '/face-swap' },
+    { title: 'Style Transfer', description: 'Change Image Style', href: '/style-transfer' },
+    { title: 'Face Scene', description: 'Face Scene Composition', href: '/face-scene' },
+    { title: 'Face Style', description: 'Face Style Transfer', href: '/style-transfer' },
   ],
-  '设计工具': [
-    { title: 'Logo设计', description: '专业logo生成', href: '/logo-design' },
-    { title: 'T恤图案', description: '服装图案设计', href: '/t-shirt-design' },
-    { title: '社交媒体', description: '社交平台图片', href: '/social-media-design' },
-    { title: '艺术作品', description: '艺术创作辅助', href: '/art-creation' },
-    { title: '海报设计', description: '海报快速生成', href: '/poster-design' },
-    { title: '手机壁纸', description: '壁纸设计制作', href: '/wallpaper-design' },
+  'Design Tools': [
+    { title: 'Logo Design', description: 'Professional Logo Generation', href: '/logo-design' },
+    { title: 'T-shirt Design', description: 'Apparel Graphic Design', href: '/domain-generate' },
+    { title: 'Social Media', description: 'Social Media Images', href: '/domain-generate' },
+    { title: 'Artwork', description: 'Art Creation Assistant', href: '/domain-generate' },
+    { title: 'Poster Design', description: 'Quick Poster Generation', href: '/domain-generate' },
+    { title: 'Phone Wallpaper', description: 'Wallpaper Design', href: '/domain-generate' },
   ],
-  '创意工具': [
-    { title: '产品展示', description: '商品展示设计', href: '/product-display' },
-    { title: '贴纸设计', description: '创意贴纸制作', href: '/sticker-design' },
-    { title: '卡片设计', description: '贺卡邀请函等', href: '/card-design' },
-    { title: '无缝图案', description: '循环图案设计', href: '/seamless-pattern' },
-    { title: '表情设计', description: '表情包制作', href: '/emoji-design' },
-    { title: '字母组合', description: '创意字母设计', href: '/letter-design' },
+  'Creative Tools': [
+    { title: 'Product Display', description: 'Product Display Design', href: '/domain-generate' },
+    { title: 'Sticker Design', description: 'Creative Sticker Design', href: '/domain-generate' },
+    { title: 'Card Design', description: 'Greeting Cards & Invitations', href: '/domain-generate' },
+    { title: 'Seamless Pattern', description: 'Seamless Pattern Design', href: '/domain-generate' },
+    { title: 'Emoticon Design', description: 'Emoticon Design', href: '/domain-generate' },
+    { title: 'Letter Design', description: 'Creative Letter Design', href: '/domain-generate' },
   ],
-  '其他工具': [
-    { title: '书籍封面', description: '封面设计制作', href: '/book-cover' },
-    { title: '涂色页面', description: '涂色本设计', href: '/coloring-page' },
-    { title: '杯子图案', description: '杯子图案设计', href: '/cup-design' },
+  'Other Tools': [
+    { title: 'Book Cover', description: 'Book Cover Design', href: '/domain-generate' },
+    { title: 'Coloring Page', description: 'Coloring Book Design', href: '/domain-generate' },
+    { title: 'Cup Design', description: 'Cup Design', href: '/domain-generate' },
   ],
 };
 

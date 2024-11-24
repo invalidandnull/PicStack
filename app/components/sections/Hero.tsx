@@ -5,19 +5,19 @@ export default function Hero() {
   return (
     <div className="py-20 text-center">
       <h1 className="text-6xl font-bold mb-6">
-        AI 驱动的图片处理工具
+        AI-powered image processing tool
       </h1>
       <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-        一站式图片处理解决方案，提供超过25种专业工具，让创作更简单
+        One-stop image processing solution, providing over 25 professional tools to make creation easier
       </p>
       <div className="space-x-4">
         <Button size="lg" asChild>
-          <Link href="/mainapp">
-            开始使用
+          <Link href="/">
+            Start Now
           </Link>
         </Button>
         <Button size="lg" variant="outline">
-          了解更多
+          Learn More
         </Button>
       </div>
     </div>

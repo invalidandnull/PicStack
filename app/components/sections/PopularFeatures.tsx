@@ -3,40 +3,40 @@ import Link from 'next/link';
 
 const popularFeatures = [
   {
-    title: '去除背景',
-    description: '一键智能去除图片背景',
+    title: 'Remove Background',
+    description: 'One-click smart removal of image backgrounds',
     icon: '🎨',
-    href: '/mainapp'
+    href: '/remove-bg'
   },
   {
-    title: '产品图优化',
-    description: '专业电商产品图处理',
+    title: 'AI Image Generation',
+    description: 'Professional AI image generation',
     icon: '📦',
-    href: '/mainapp'
+    href: '/generate'
   },
   {
-    title: '高清修复',
-    description: '提升图片清晰度和质量',
+    title: 'Enhance',
+    description: 'Enhance image clarity and quality',
     icon: '✨',
-    href: '/mainapp'
+    href: '/enhance'
   },
   {
-    title: 'AI 换脸',
-    description: '智能人物换脸技术',
+    title: 'AI Face Swap',
+    description: 'Smart AI face swap technology',
     icon: '👤',
-    href: '/mainapp'
+    href: '/face-swap'
   },
   {
-    title: '证件照制作',
-    description: '标准证件照快速生成',
+    title: 'ID Photo Maker',
+    description: 'Standard ID photo generation',
     icon: '📷',
-    href: '/mainapp'
+    href: '/id-photo'
   },
   {
-    title: '风格转换',
-    description: '多种艺术风格随心转换',
+    title: 'Style Transfer',
+    description: 'Multiple artistic styles at your fingertips',
     icon: '🎨',
-    href: '/mainapp'
+    href: '/style-transfer'
   }
 ];
 
@@ -45,7 +45,7 @@ export default function PopularFeatures() {
     <div className="py-20 bg-gray-50">
       <div className="container">
         <h2 className="text-3xl font-bold text-center mb-12">
-          热门功能
+          Popular Features
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {popularFeatures.map((feature) => (
