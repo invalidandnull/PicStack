@@ -3,6 +3,19 @@
 import Navbar from '@/app/components/layout/Navbar';
 import Footer from '@/app/components/layout/Footer';
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
+import { STRIPE_PRICE_IDS } from '@/app/lib/stripe';
+import { loadStripe } from '@stripe/stripe-js';
+import { supabase } from '@/lib/supabase';
+// import { User } from '@supabase/supabase-js';
+import { useSession } from 'next-auth/react';
+
+interface myUser {
+  id: string
+  email: string
+  name?: string
+  image?: string
+}
 
 const plans = [
   {
@@ -31,7 +44,7 @@ const plans = [
     price: '$19.99',
     description: 'Best for professional creators',
     features: [
-      '100 image generations per day',
+      '100 image generations per month',
       'Advanced image processing',
       'HD quality output',
       'Priority support',
@@ -48,10 +61,10 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: 'Custom',
+    price: '$199',
     description: 'For teams and businesses',
     features: [
-      'Unlimited generations',
+      '1000 image generations per month',
       'Custom API solutions',
       'Dedicated support',
       'Custom features',
@@ -69,6 +82,113 @@ const plans = [
 ];
 
 export default function PricingPage() {
+  const [loading, setLoading] = useState(false);
+  const { data: session, status } = useSession()
+  const [user, setUser] = useState<myUser | null>(null);
+
+  useEffect(() => {
+    // 检查当前会话
+    const checkUser = async () => {
+      // const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+     
+    checkUser();
+
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        // Convert Supabase User to our User type
+        const user = {
+          ...session.user,
+          email: session.user.email || '' // Ensure email is never undefined
+        };
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        },
+      }
+    });
+  };
+
+  const handleSubscribe = async (planName: string) => {
+    try {
+      setLoading(true);
+      const user = session?.user
+      console.log(user)
+      // 如果用户未登录，先进行登录
+      if (!user) {
+        await signInWithGoogle();
+        return;
+      }
+
+      // 添加调试信息
+      console.log('Current user:', user);
+      console.log('User email:', user.email);
+
+      // 确保有用户邮箱
+      if (!user.email) {
+        throw new Error('User email not found');
+      }
+
+      const priceId = planName === 'Pro' ? STRIPE_PRICE_IDS.PRO : STRIPE_PRICE_IDS.ENTERPRISE;
+      
+      // 添加调试信息
+      console.log('Making request with:', { planName, priceId, email: user.email });
+      
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planName,
+          priceId,
+          email: user.email 
+        }),
+      });
+
+      // 添加调试信息
+      console.log('Response status:', response.status);
+      
+      const data = await response.json();
+      console.log('Response data:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create checkout session');
+      }
+
+      const { sessionId } = data;
+      
+      // 重定向到 Stripe Checkout
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+      const result = await stripe?.redirectToCheckout({ sessionId });
+
+      if (result?.error) {
+        throw new Error(result.error.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert(error instanceof Error ? error.message : 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -145,6 +265,8 @@ export default function PricingPage() {
                 </div>
 
                 <button
+                  onClick={() => handleSubscribe(plan.name)}
+                  disabled={loading}
                   className={cn(
                     "w-full py-3 px-4 rounded-lg font-medium transition-colors",
                     plan.highlighted
@@ -152,7 +274,7 @@ export default function PricingPage() {
                       : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                   )}
                 >
-                  {plan.cta}
+                  {loading ? 'Processing...' : plan.cta}
                 </button>
               </div>
             ))}
