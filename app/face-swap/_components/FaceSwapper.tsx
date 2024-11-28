@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 interface ImageState {
   url: string;
@@ -17,6 +19,8 @@ export default function FaceSwapper() {
   const [isDragging, setIsDragging] = useState<'source' | 'face' | null>(null);
   const sourceInputRef = useRef<HTMLInputElement>(null);
   const faceInputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   const handleDragEnter = (type: 'source' | 'face') => (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -74,6 +78,7 @@ export default function FaceSwapper() {
       setError('Please upload both images');
       return;
     }
+    if (!user) return;
 
     setIsProcessing(true);
     setError(null);
@@ -103,6 +108,7 @@ export default function FaceSwapper() {
       }
 
       setProcessedImage(data.output);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Processing error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { decrementCredits } from '@/lib/supabase';
 
 interface RestoreParams {
   scale: number;
@@ -23,6 +25,8 @@ export default function ImageRestorer() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   // 拖拽上传相关处理函数
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -81,6 +85,7 @@ export default function ImageRestorer() {
 
   const handleProcess = async () => {
     if (!selectedImage) return;
+    if (!user) return;
 
     setIsProcessing(true);
     setError(null);
@@ -105,6 +110,7 @@ export default function ImageRestorer() {
       }
 
       setProcessedImage(data.output);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Processing error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 interface GenerationParams {
   prompt: string;
@@ -43,6 +45,8 @@ export default function LogoDesigner() {
   const [generatedLogos, setGeneratedLogos] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   const handleGenerate = async () => {
     if (!brandName.trim()) {
@@ -54,6 +58,8 @@ export default function LogoDesigner() {
       setError('Please select a logo style');
       return;
     }
+
+    if (!user) return;
 
     setIsGenerating(true);
     setError(null);
@@ -81,6 +87,7 @@ export default function LogoDesigner() {
       }
 
       setGeneratedLogos(Array.isArray(data.output) ? data.output : [data.output]);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Generation error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

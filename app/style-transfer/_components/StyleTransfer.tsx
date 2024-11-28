@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 interface StyleOption {
   id: string;
@@ -97,6 +99,8 @@ export default function StyleTransfer() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   // 拖拽上传相关处理函数
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -154,6 +158,7 @@ export default function StyleTransfer() {
       setError('Please select an image and style');
       return;
     }
+    if (!user) return;
 
     setIsProcessing(true);
     setError(null);
@@ -177,6 +182,7 @@ export default function StyleTransfer() {
       }
 
       setProcessedImage(data.output);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Processing error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 interface BackgroundParams {
   prompt: string;
@@ -29,6 +31,8 @@ export default function ChangeBackground() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   // 拖拽上传相关处理函数
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -90,6 +94,7 @@ export default function ChangeBackground() {
       setError('Please upload an image and enter background description');
       return;
     }
+    if (!user) return;
 
     setIsProcessing(true);
     setError(null);
@@ -113,6 +118,7 @@ export default function ChangeBackground() {
       }
 
       setGeneratedImages(Array.isArray(data.output) ? data.output : [data.output]);
+      decrementCredits(user.email)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {

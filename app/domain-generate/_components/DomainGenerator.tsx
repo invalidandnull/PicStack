@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { domainConfigs } from '@/app/config/domainConfigs';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 interface GenerationParams {
   prompt: string;
@@ -47,12 +49,15 @@ export default function DomainGenerator() {
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { data: session } = useSession()
+  const user = session?.user
 
   const handleGenerate = async () => {
     if (!customPrompt.trim()) {
       setError('Please enter a description');
       return;
     }
+    if (!user) return;
 
     setIsGenerating(true);
     setError(null);
@@ -81,6 +86,7 @@ export default function DomainGenerator() {
       }
 
       setGeneratedImages(Array.isArray(data.output) ? data.output : [data.output]);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Generation error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

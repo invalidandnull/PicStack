@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useSession } from 'next-auth/react';
+import { decrementCredits } from '@/lib/supabase';
 
 export default function RemoveBg() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -10,6 +12,9 @@ export default function RemoveBg() {
   const [error, setError] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session, status } = useSession()
+
+  const user = session?.user
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -71,6 +76,8 @@ export default function RemoveBg() {
     setIsProcessing(true);
     setError(null);
 
+    if (!user) return;
+
     try {
       const response = await fetch('/api/process-image', {
         method: 'POST',
@@ -90,6 +97,7 @@ export default function RemoveBg() {
       }
 
       setProcessedImage(data.output);
+      decrementCredits(user.email)
     } catch (err) {
       console.error('Processing error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

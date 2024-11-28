@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { decrementCredits } from '@/lib/supabase';
+import { useSession } from 'next-auth/react';
 
 type BlurLevel = 'sm' | 'base' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
 type BlurPixels = 4 | 8 | 12 | 16 | 24 | 40 | 64;
@@ -32,7 +34,9 @@ export default function BlurBackground() {
   const [isDragging, setIsDragging] = useState(false);
   const [isChangingBlur, setIsChangingBlur] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const { data: session } = useSession()
+  const user = session?.user
+  
   // 拖拽上传相关处理函数
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -140,6 +144,7 @@ export default function BlurBackground() {
   // 处理图片的主函数
   const handleProcess = async () => {
     if (!selectedImage) return;
+    if (!user) return;
 
     setIsProcessing(true);
     setError(null);
@@ -153,6 +158,7 @@ export default function BlurBackground() {
         // 使用新的前景图片进行模糊合成
         const blurred = await blurAndComposite(selectedImage, removedBg, blurLevel);
         setProcessedImage(blurred);
+        decrementCredits(user.email)
       } else {
         // 如果已有前景图片，直接进行模糊合成
         const blurred = await blurAndComposite(selectedImage, foregroundImage, blurLevel);
